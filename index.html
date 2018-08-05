@@ -32,7 +32,7 @@
 		<img id="imgCarro"	src="img/tesla/modelS-blanco.jpg" class="img-responsive">
 	</div>
 
-	<div class="form-group">
+	<div id="form1" class="form-group">
 	    <div class="col-sm-offset-4 col-sm-5">
 	      	<select id="cmbColor" class="form-control">
 	      		<option value="blanco">Blanco</option>
@@ -49,17 +49,45 @@
 <script>
 	
 (function(){
+
+
+	let carroView = {
+
+		colores : ['blanco', 'rojo', 'cafe', 'verde', 'negro'],
+
+
+		// Funcion principal
+		init: function(){
+
+
+			for (var i = 0; i < carroView.colores.length; i++ ) {
+				
+				var color = carroView.colores[i];
+
+				$("<option>", {
+					value: color,
+					text: color
+				}).appendTo("#cmbColor");
+
+			}
+		}
+
+	};
+
+	carroView.init();
+
+
 	
-	$("#cmbColor").on("change", function(){
+	// $("#cmbColor").on("change", function(){
 
-		let color = $(this).val();
-		let url = "img/tesla/modelS-"+ color +".jpg";
+	// 	let color = $(this).val();
+	// 	let url = "img/tesla/modelS-"+ color +".jpg";
 
-		$("#imgCarro").attr("src", url);
+	// 	$("#imgCarro").attr("src", url);
 
-		console.log(url);
+	// 	console.log(url);
 		
-	})
+	// })
 	
 })();
 

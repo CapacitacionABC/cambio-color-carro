@@ -1,0 +1,13 @@
+#form1{
+	position: relative;
+
+	bottom: 150px;
+}
+
+@media (max-width: 1000px ) {
+
+	#form1{
+		bottom: 50px;
+	}
+	
+}
