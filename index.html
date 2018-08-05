@@ -22,22 +22,20 @@
 	<hr>
 	
 
-	<!-- 
+	 
 	<div class="divPreloader">
 		<img src="img/loading.gif" class="imgLoader img-responsive">
 	</div> 
-	-->
+	
 	
 	<div class="divVistaPrevia">
-		<img id="imgCarro"	src="img/tesla/modelS-blanco.jpg" class="img-responsive">
+		<img id="imgCarro" class="img-responsive">
 	</div>
 
 	<div id="form1" class="form-group">
 	    <div class="col-sm-offset-4 col-sm-5">
 	      	<select id="cmbColor" class="form-control">
-	      		<option value="blanco">Blanco</option>
-	      		<option value="negro">Negro</option>
-	      		<option value="rojo">Rojo</option>
+
 	      	</select>
 	    </div>
 	</div>
@@ -53,13 +51,17 @@
 
 	let carroView = {
 
-		colores : ['blanco', 'rojo', 'cafe', 'verde', 'negro'],
+		loader: $(".divPreloader"),
+		colores: ['blanco', 'negro'],
 
 
 		// Funcion principal
-		init: function(){
+		init: function( opciones){
 
+			// Extend, permite expandir las opciones
+			$.extend( carroView, opciones);
 
+			// Ciclo para barrer el arreglo de colores y llenar nuestro select
 			for (var i = 0; i < carroView.colores.length; i++ ) {
 				
 				var color = carroView.colores[i];
@@ -68,24 +70,75 @@
 					value: color,
 					text: color
 				}).appendTo("#cmbColor");
-
 			}
+
+			// Hacemos .bind, ya que dentro de un objeto no podemos hacer .on
+			// Nueva funcion del cambio
+			$("#cmbColor").bind("change", function(){
+				let color = $(this).val();
+				let url = "img/tesla/modelS-"+ color +".jpg";
+
+				carroView.cambiarColor(url);
+
+				// $("#imgCarro").attr("src", url);
+			});
+
+			// Cambiar imagen al iniciar
+			carroView.cambiarColor();
+		},
+
+		// Funcion para cambiar el color
+		cambiarColor: function( img ){
+
+			var $loader = this.loader;
+
+			// Aparece el loader
+			$loader.fadeIn(100);
+
+			if ( img === undefined){
+				var color = carroView.colores[0];
+				img = url = "img/tesla/modelS-"+ color +".jpg";
+		
+			}
+
+			// Comprovacion de hora cuando inicia la carga
+			var ahora = new Date();
+			console.log(ahora);
+			
+
+			$("<img>", {
+				src : img,
+				class : "img-responsive"
+			}).load(function(){
+
+				// Comprovacion de hora cuando termina la carga
+				var ahora = new Date();
+				console.log(ahora);
+
+				$(".divVistaPrevia").find("img").remove();
+				$(this).appendTo(".divVistaPrevia");
+
+				// Desaparece el loader
+				$loader.fadeOut(300);
+				
+			})
 		}
 
 	};
 
-	carroView.init();
+	carroView.init({
+		colores : ['rojo', 'cafe', 'verde']
+	});
 
 
-	
+	// Primera implementacion basica
+
 	// $("#cmbColor").on("change", function(){
 
 	// 	let color = $(this).val();
 	// 	let url = "img/tesla/modelS-"+ color +".jpg";
 
 	// 	$("#imgCarro").attr("src", url);
-
-	// 	console.log(url);
 		
 	// })
 	
